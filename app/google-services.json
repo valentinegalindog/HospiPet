@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "900496873547",
+    "project_id": "hospipet-887b3",
+    "storage_bucket": "hospipet-887b3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900496873547:android:0f354d89346499bdb015ce",
+        "android_client_info": {
+          "package_name": "com.veterinaria.hospipet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXlfX_1SKRWMjHQyfjK0DGU7nw5gHG1IM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
