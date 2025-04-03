@@ -10,12 +10,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.veterinaria.hospipet.ui.theme.HospiPetTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var navHostController: NavHostController
+    private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = Firebase.auth
         enableEdgeToEdge()
         setContent {
             navHostController = rememberNavController()
@@ -25,9 +30,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationWrapper(navHostController)
+                    NavigationWrapper(navHostController, auth)
                 }
             }
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        val currentUser = auth.currentUser
+        if(currentUser!=null){
+            //navegar al home
         }
     }
 }
