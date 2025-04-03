@@ -22,7 +22,7 @@ fun SingUpScreen(auth: FirebaseAuth) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Spacer(modifier = Modifier.weight(0.05f))
-        Text(text = "Proxima pantalla! VAMOS BIEN!",
+        Text(text = "Proxima pantalla! VAMOS BIEN! MUY BIEN!",
             fontSize = 13.sp,
             fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.weight(0.4f))
