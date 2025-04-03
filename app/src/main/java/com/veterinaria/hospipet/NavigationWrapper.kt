@@ -15,10 +15,13 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
 
     NavHost(navController = navHostController, startDestination = "init" ){
         composable("init") {
-            InitScreen(auth = auth)
+            InitScreen(auth = auth,
+                        navigateToLogin = {navHostController.navigate("logIn")},
+                        navigateToSignUp = {navHostController.navigate("signUp")})
         }
         composable("logIn"){
-            LoginScreen(auth)
+            LoginScreen(auth = auth,
+                navigateToSignUp = {navHostController.navigate("signUp")})
         }
         composable("signUp"){
             SingUpScreen(auth)
