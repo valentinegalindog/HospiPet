@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,7 +26,7 @@ import com.veterinaria.hospipet.ui.theme.BlackPure
 import com.veterinaria.hospipet.ui.theme.WhitePure
 
 @Composable
-fun InitScreen(auth: FirebaseAuth) {
+fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit = {}) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -84,6 +85,7 @@ fun InitScreen(auth: FirebaseAuth) {
             onClick = { auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if(task.isSuccessful){
                     Log.i("valentin", "LOGIN OK")
+                    navigateToSignUp()
                 }else{
                     Log.i("valentin", "KO")
                 }
@@ -96,7 +98,7 @@ fun InitScreen(auth: FirebaseAuth) {
         }
 
         Spacer(modifier = Modifier.weight(0.05f))
-        Text(text = "¿No puedes iniciar sesión?", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+        Text(text = "Crear una cuenta", fontSize = 13.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickable { navigateToLogin() })
         Spacer(modifier = Modifier.weight(0.4f))
     }
 }
