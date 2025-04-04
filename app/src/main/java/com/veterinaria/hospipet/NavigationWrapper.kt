@@ -21,7 +21,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         }
         composable("logIn"){
             LoginScreen(auth = auth,
-                navigateToSignUp = {navHostController.navigate("signUp")})
+                navigateToSignUp = {navHostController.navigate("signUp")},
+                navigateToInit = {navHostController.navigate("init")})
         }
         composable("signUp"){
             SingUpScreen(auth)

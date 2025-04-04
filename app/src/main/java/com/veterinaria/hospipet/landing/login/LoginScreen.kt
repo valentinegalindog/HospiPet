@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -35,7 +37,7 @@ import com.veterinaria.hospipet.ui.theme.BlackPure
 import com.veterinaria.hospipet.ui.theme.WhitePure
 
 @Composable
-fun LoginScreen(auth: FirebaseAuth, navigateToSignUp: () -> Unit = {}) {
+fun LoginScreen(auth: FirebaseAuth, navigateToSignUp: () -> Unit = {}, navigateToLogin: () -> Unit = {}, navigateToInit: () -> Unit = {} ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -45,7 +47,17 @@ fun LoginScreen(auth: FirebaseAuth, navigateToSignUp: () -> Unit = {}) {
             .background(WhitePure),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.04f))
+
+        Spacer(modifier = Modifier.weight(0.01f))
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
+            contentDescription = "Back",
+            modifier = Modifier.clickable { navigateToInit() }
+                .size(50.dp) // Ajusta el tamaño si es necesario
+                .align(Alignment.Start) // Lo coloca en la esquina superior izquierda
+                .padding(start = 12.dp)
+        )
+        Spacer(modifier = Modifier.weight(0.02f))
         Text(text = "Crea tu cuenta", fontSize = 28.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.weight(0.02f))
 
@@ -54,10 +66,11 @@ fun LoginScreen(auth: FirebaseAuth, navigateToSignUp: () -> Unit = {}) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            modifier = Modifier
+            modifier = Modifier.clickable { navigateToLogin() }
                 .width(300.dp) // Fija un ancho máximo
                 .border(2.dp, BlackPure, RoundedCornerShape(12.dp)) // Borde negro y esquinas redondeadas
                 .clip(RoundedCornerShape(12.dp)),
+
             maxLines = 1, // Evita que crezca en altura
             singleLine = true // Mantiene el texto en una sola línea
         )
