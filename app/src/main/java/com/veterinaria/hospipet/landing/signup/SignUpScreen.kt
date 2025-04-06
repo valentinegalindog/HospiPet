@@ -22,8 +22,8 @@ fun SingUpScreen(auth: FirebaseAuth) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Spacer(modifier = Modifier.weight(0.05f))
-        Text(text = "Proxima pantalla! VAMOS BIEN! MUY BIEN!",
-            fontSize = 13.sp,
+        Text(text = "Profe logramos la autenticación",
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.weight(0.4f))
 
