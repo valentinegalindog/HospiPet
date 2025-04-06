@@ -42,7 +42,9 @@ class MainActivity : ComponentActivity() {
         val currentUser = auth.currentUser
         if(currentUser!=null){
             //navegar al home
-            Log.i("Valentin", "Estas Logueado")
+            Log.i("Valentin", "Estoy Logueado")
+
+            auth.signOut()
         }
     }
 }
