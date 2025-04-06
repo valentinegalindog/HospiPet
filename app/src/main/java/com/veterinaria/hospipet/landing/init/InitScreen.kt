@@ -26,7 +26,7 @@ import com.veterinaria.hospipet.ui.theme.BlackPure
 import com.veterinaria.hospipet.ui.theme.WhitePure
 
 @Composable
-fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToSignUp: () -> Unit = {}) {
+fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToHome: () -> Unit = {}) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -85,7 +85,7 @@ fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToS
             onClick = { auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if(task.isSuccessful){
                     Log.i("valentin", "LOGIN OK")
-                    navigateToSignUp()
+                    navigateToHome()
                 }else{
                     Log.i("valentin", "KO")
                 }

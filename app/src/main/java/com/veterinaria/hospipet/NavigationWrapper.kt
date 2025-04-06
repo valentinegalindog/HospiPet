@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.veterinaria.hospipet.landing.home.HomeScreen
+import com.veterinaria.hospipet.landing.home.TarjetasInicio
 import com.veterinaria.hospipet.landing.init.InitScreen
 import com.veterinaria.hospipet.landing.login.LoginScreen
 import com.veterinaria.hospipet.landing.signup.SingUpScreen
@@ -18,19 +19,24 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         composable("init") {
             InitScreen(auth = auth,
                         navigateToLogin = {navHostController.navigate("logIn")},
-                        navigateToSignUp = {navHostController.navigate("signUp")})
+                        navigateToHome = {navHostController.navigate("home")})
         }
         composable("logIn"){
             LoginScreen(auth = auth,
-                navigateToSignUp = {navHostController.navigate("signUp")},
-                navigateToInit = {navHostController.navigate("init")})
+
+                navigateToInit = {navHostController.navigate("init")},
+                navigateToHome = {navHostController.navigate("home")})
         }
         composable("signUp"){
             SingUpScreen(auth)
         }
         composable("home") {
-            //HomeScreen()
+            TarjetasInicio(
+                navigateToInit = { navHostController.navigate("init") }
+            )
+
         }
+
 
     }
 }
