@@ -58,7 +58,7 @@ fun HomeScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TarjetasInicio(navigateToInit: () -> Unit = {}) {
+fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,33 +66,6 @@ fun TarjetasInicio(navigateToInit: () -> Unit = {}) {
             .background(Color(0xFFF5F5F5))
             .padding(vertical = 32.dp)
     ) {
-        Spacer(modifier = Modifier.height(0.02.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 8.dp)
-        ) {
-            /*
-            // Icono a la izquierda
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
-                contentDescription = "Back",
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .size(30.dp)
-            )
-*/
-            // Icono a la derecha
-            Icon(
-                painter = painterResource(id = R.drawable.icon_out),
-                contentDescription = "Forward",
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .size(30.dp)
-                    .clickable { navigateToInit() }
-            )
-        }
-
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
@@ -114,14 +87,15 @@ fun TarjetasInicio(navigateToInit: () -> Unit = {}) {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            HomeScreen(title = "Cliente", imageRes = R.drawable.cliente_veterinario)
-            HomeScreen(title = "Veterinario", imageRes = R.drawable.medico)
+            HomeScreen(title = "Cliente", imageRes = R.drawable.cliente_veterinario, modifier = Modifier.clickable { navigateToMenuCustomer("menuCustomer") })
+            HomeScreen(title = "Veterinario", imageRes = R.drawable.medico, modifier = Modifier.clickable { navigateToMenuCustomer("menuCustomer") })
         }
     }
 }
 
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewTarjetasInicio() {
     TarjetasInicio()
-}
+}*/
