@@ -102,5 +102,3 @@ fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToH
         Spacer(modifier = Modifier.weight(0.4f))
     }
 }
-
-
