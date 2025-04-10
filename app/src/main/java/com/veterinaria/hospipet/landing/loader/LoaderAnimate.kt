@@ -25,13 +25,17 @@ fun Loader(
 
     val dots = ".".repeat(dotCount)
 
-    // Aplica el modificador al Text
-    Text(
-        text = "$text$dots",
-        fontSize = 24.sp,
-        color = Color.White,
-        modifier = modifier
-            .fillMaxSize() // Esto hace que ocupe toda la pantalla
-            .wrapContentSize(Alignment.Center) // Centra el texto
-    )
+    Box(
+        modifier = modifier.fillMaxSize(), // Asegura que el Box ocupe toda la pantalla
+        contentAlignment = Alignment.Center // Centra el contenido dentro del Box
+    ) {
+        Text(
+            text = "$text$dots",
+            fontSize = 24.sp,
+            color = Color.Black, // Color negro para el texto
+        )
+    }
 }
+
+
+

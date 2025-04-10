@@ -9,7 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,6 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.veterinaria.hospipet.R
+import com.veterinaria.hospipet.landing.loader.Loader
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
@@ -58,37 +61,120 @@ fun HomeScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit) {
+fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit) {
+    var isLoading by remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) } // 🔔 Modal de confirmación
+    val coroutineScope = rememberCoroutineScope()
+
+    val navigate = { destination: String ->
+        isLoading = true
+        coroutineScope.launch {
+            delay(3000)
+            isLoading = false
+            navigateToMenuCustomer(destination)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()) // ✅ Scroll para pantallas pequeñas
+            .verticalScroll(rememberScrollState())
             .background(Color(0xFFF5F5F5))
             .padding(vertical = 32.dp)
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text(
-            text = "Cuidemos juntos a tu mascota 🐾\n¿Eres Cliente o Médico veterinario?",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Medium
-            ),
+        // 🧭 Fila superior con los iconos izquierda y derecha
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            HomeScreen(title = "Cliente", imageRes = R.drawable.cliente_veterinario, modifier = Modifier.clickable { navigateToMenuCustomer("menuCustomer") })
-            HomeScreen(title = "Veterinario", imageRes = R.drawable.medico, modifier = Modifier.clickable { navigateToMenuCustomer("menuCustomer") })
+            // Simula el espacio del icono izquierdo si está comentado
+            /*
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
+                contentDescription = "Atrás",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        // Acción para atrás
+                    }
+            )
+            */
+            Spacer(modifier = Modifier.size(30.dp)) // Ocupa el mismo lugar que el ícono izquierdo
+
+            // Icono derecha (cerrar sesión con modal)
+            Icon(
+                painter = painterResource(id = R.drawable.icon_out),
+                contentDescription = "Salir",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        showLogoutDialog = true
+                    }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (!isLoading) {
+            Text(
+                text = "Cuidemos juntos a tu mascota 🐾\n¿Eres Cliente o Médico veterinario?",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (isLoading) {
+            Loader(modifier = Modifier.fillMaxSize())
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                HomeScreen(
+                    title = "Cliente",
+                    imageRes = R.drawable.cliente_veterinario,
+                    modifier = Modifier.clickable { navigate("menuCustomer") }
+                )
+                HomeScreen(
+                    title = "Veterinario",
+                    imageRes = R.drawable.medico,
+                    modifier = Modifier.clickable { navigate("menuVeterinario") }
+                )
+            }
+        }
+
+        // 🧼 Modal de confirmación de cierre de sesión
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = { Text(text = "¿Cerrar sesión?") },
+                text = { Text("¿Estás seguro que quieres cerrar sesión?") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showLogoutDialog = false
+                            navigateToInit() // Confirmar cierre de sesión
+                        }
+                    ) {
+                        Text("Aceptar")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLogoutDialog = false }) {
+                        Text("Cancelar")
+                    }
+                }
+            )
         }
     }
 }
@@ -97,5 +183,8 @@ fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewTarjetasInicio() {
-    TarjetasInicio()
-}*/
+    TarjetasInicio(
+        onLogout = { /* Acción para cerrar sesión */ }
+    )
+}
+*/

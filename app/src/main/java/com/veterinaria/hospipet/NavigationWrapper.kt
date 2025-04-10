@@ -8,8 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.veterinaria.hospipet.landing.home.TarjetasInicio
 import com.veterinaria.hospipet.landing.init.InitScreen
 import com.veterinaria.hospipet.landing.login.LoginScreen
-import com.veterinaria.hospipet.landing.options.MenuScreen
-import com.veterinaria.hospipet.landing.options.TarjetasMenuCustomer
+import com.veterinaria.hospipet.landing.options.TarjetasCustomer
 import com.veterinaria.hospipet.landing.signup.SingUpScreen
 
 @Composable
@@ -34,13 +33,14 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         }
         composable("home") {
             TarjetasInicio(
-                navigateToMenuCustomer = { navHostController.navigate("menuCustomer") }
+                navigateToMenuCustomer = { navHostController.navigate("menuCustomer") },
+                navigateToInit = { navHostController.navigate("init") }
             )
         }
         composable("menuCustomer") {
-            TarjetasMenuCustomer(
+            TarjetasCustomer(
                 navigateToInit = { navHostController.navigate("init") },
-                navigateToMenuCustomer = { navHostController.navigate("menuOptions") }
+                navigateToMenuCustomer = { navHostController.navigate("signUp") }
             )
         }
     }

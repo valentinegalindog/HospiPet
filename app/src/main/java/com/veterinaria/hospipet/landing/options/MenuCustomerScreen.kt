@@ -21,15 +21,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.veterinaria.hospipet.R
+import com.veterinaria.hospipet.landing.loader.Loader
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun MenuScreen(
-    title: String,
-    imageRes: Int,
-    modifier: Modifier = Modifier,
-    navController: (String) -> Unit, // Se espera que sea una función que navegue
-    click: String
-) {
+fun MenuCustomerScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -37,10 +34,6 @@ fun MenuScreen(
             .fillMaxWidth()
             .height(300.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(16.dp))
-            .clickable {
-                // Navegar a otra pantalla
-                navController(click) // Usar 'click' para navegar
-            }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,83 +61,140 @@ fun MenuScreen(
 }
 
 @Composable
-fun TarjetasMenuCustomer(
-    navigateToInit: () -> Unit = {},
-    navigateToMenuCustomer: (String) -> Unit = {}, // Cambiar para recibir String
-    navigateToOptions: () -> Unit = {}
-) {
-    val showDialog = remember { mutableStateOf(false) }
+fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit) {
+    var isLoading by remember { mutableStateOf(false) }
+    var showLogoutDialog by remember { mutableStateOf(false) } // 🔔 Modal de confirmación
+    val coroutineScope = rememberCoroutineScope()
 
-    if (showDialog.value) {
-        AlertDialog(
-            onDismissRequest = { showDialog.value = false },
-            title = { Text("Cerrar sesión") },
-            text = { Text("¿Deseas cerrar sesión?") },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        showDialog.value = false
-                        navigateToInit() // Acción de cerrar sesión
-                    }
-                ) {
-                    Text("Sí")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDialog.value = false }) {
-                    Text("Cancelar")
-                }
-            }
-        )
+    val navigate = { destination: String ->
+        isLoading = true
+        coroutineScope.launch {
+            delay(3000)
+            isLoading = false
+            navigateToMenuCustomer(destination)
+        }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()) // ✅ Scroll para pantallas pequeñas
+            .verticalScroll(rememberScrollState())
             .background(Color(0xFFF5F5F5))
             .padding(vertical = 32.dp)
     ) {
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Text(
-            text = "BIENVENIDO",
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Medium
-            ),
+        // 🧭 Fila superior con los iconos izquierda y derecha
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            MenuScreen(
-                title = "Cliente",
-                imageRes = R.drawable.cliente_veterinario,
-                navController = navigateToMenuCustomer,
-                click = "menuOptions" // Pasar el valor del click
+            // Simula el espacio del icono izquierdo si está comentado
+            /*
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
+                contentDescription = "Atrás",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        // Acción para atrás
+                    }
             )
-            MenuScreen(
-                title = "Veterinario",
-                imageRes = R.drawable.medico,
-                navController = navigateToMenuCustomer,
-                click = "menuOptions" // Pasar el valor del click
+            */
+            Spacer(modifier = Modifier.size(30.dp)) // Ocupa el mismo lugar que el ícono izquierdo
+
+            // Icono derecha (cerrar sesión con modal)
+            Icon(
+                painter = painterResource(id = R.drawable.icon_out),
+                contentDescription = "Salir",
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        showLogoutDialog = true
+                    }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (!isLoading) {
+            Text(
+                text = "🐾¡Bienvenido a tu espacio veterinario!",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (isLoading) {
+            Loader(modifier = Modifier.fillMaxSize())
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                MenuCustomerScreen(
+                    title = "Notificaciones",
+                    imageRes = R.drawable.cliente_veterinario,
+                    modifier = Modifier.clickable { navigate("signUp") }
+                )
+                MenuCustomerScreen(
+                    title = "Mis Mascotas",
+                    imageRes = R.drawable.medico,
+                    modifier = Modifier.clickable { navigate("signUp") }
+                )
+                MenuCustomerScreen(
+                    title = "Citas medicas",
+                    imageRes = R.drawable.medico,
+                    modifier = Modifier.clickable { navigate("signUp") }
+                )
+                MenuCustomerScreen(
+                    title = "Hospitalización",
+                    imageRes = R.drawable.medico,
+                    modifier = Modifier.clickable { navigate("signUp") }
+                )
+            }
+        }
+
+        // 🧼 Modal de confirmación de cierre de sesión
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = { Text(text = "¿Cerrar sesión?") },
+                text = { Text("¿Estás seguro que quieres cerrar sesión?") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showLogoutDialog = false
+                            navigateToInit() // Confirmar cierre de sesión
+                        }
+                    ) {
+                        Text("Aceptar")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLogoutDialog = false }) {
+                        Text("Cancelar")
+                    }
+                }
             )
         }
     }
 }
 
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun PreviewTarjetasInicio() {
-    TarjetasMenuCustomer()
+    TarjetasInicio(
+        onLogout = { /* Acción para cerrar sesión */ }
+    )
 }
+*/
