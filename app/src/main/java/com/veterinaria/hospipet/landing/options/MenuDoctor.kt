@@ -18,15 +18,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.veterinaria.hospipet.R
 import com.veterinaria.hospipet.landing.loader.Loader
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.w3c.dom.Text
+
 
 @Composable
-fun MenuCustomerScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
+fun MenuDoctor(title: String, imageRes: Int, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -61,7 +62,7 @@ fun MenuCustomerScreen(title: String, imageRes: Int, modifier: Modifier = Modifi
 }
 
 @Composable
-fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit, navigateToHome: () -> Unit, navigateToMyPets: () -> Unit) {
+fun TarjetasDoctor(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit, navigateToHome: () -> Unit) {
     var isLoading by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) } // 🔔 Modal de confirmación
     val coroutineScope = rememberCoroutineScope()
@@ -71,11 +72,7 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
         coroutineScope.launch {
             delay(3000)
             isLoading = false
-            //navigateToMenuCustomer(destination)
-            when (destination) {
-                "myPets" -> navigateToMyPets()
-                "signUp" -> navigateToMenuCustomer("signUp") // o cualquier otra ruta
-            }
+            navigateToMenuCustomer(destination)
         }
     }
 
@@ -125,7 +122,7 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
 
         if (!isLoading) {
             Text(
-                text = "🐾¡Bienvenido a tu espacio veterinario!",
+                text = "🐾¡Bienvenido/a doctor!",
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
                 modifier = Modifier
@@ -145,24 +142,14 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                MenuCustomerScreen(
-                    title = "Notificaciones",
-                    imageRes = R.drawable.notificacion,
+                MenuDoctor(
+                    title = "Hospitalizar Mascota",
+                    imageRes = R.drawable.mascota_hospitalizada,
                     modifier = Modifier.clickable { navigate("signUp") }
                 )
-                MenuCustomerScreen(
-                    title = "Mis Mascotas",
-                    imageRes = R.drawable.mis_mascotas,
-                    modifier = Modifier.clickable { navigate("myPets") }
-                )
-                MenuCustomerScreen(
-                    title = "Citas medicas",
-                    imageRes = R.drawable.citas_medicas,
-                    modifier = Modifier.clickable { navigate("signUp") }
-                )
-                MenuCustomerScreen(
-                    title = "Hospitalización",
-                    imageRes = R.drawable.hospitalizacion,
+                MenuDoctor(
+                    title = "Animales Hospitalizados",
+                    imageRes = R.drawable.animales_en_hospital,
                     modifier = Modifier.clickable { navigate("signUp") }
                 )
             }
@@ -193,13 +180,3 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
         }
     }
 }
-
-/*
-@Preview(showBackground = true)
-@Composable
-fun PreviewTarjetasInicio() {
-    TarjetasInicio(
-        onLogout = { /* Acción para cerrar sesión */ }
-    )
-}
-*/
