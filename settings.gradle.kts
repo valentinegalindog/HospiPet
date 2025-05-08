@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "HospiPet"
 include(":app")
- 

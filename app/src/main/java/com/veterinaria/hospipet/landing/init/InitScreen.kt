@@ -93,7 +93,17 @@ fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToH
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
-        ) {
+        )
+
+       /* Button(
+            onClick = {
+                navigateToHome()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 70.dp)
+        )*/
+        {
             Text(text = "Iniciar sesión")
         }
 

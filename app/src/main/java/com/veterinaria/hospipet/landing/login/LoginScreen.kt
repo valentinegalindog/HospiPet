@@ -95,6 +95,7 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}, navigateToL
 
         Button(
             onClick = { auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+
                 if (task.isSuccessful){
                     //Registrado
                     Log.i("Valentin", "Registrado OK")
@@ -108,7 +109,8 @@ fun LoginScreen(auth: FirebaseAuth, navigateToHome: () -> Unit = {}, navigateToL
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 70.dp)
-        ) {
+        )
+        {
             Text(text = "Crear cuenta")
         }
 
