@@ -61,17 +61,31 @@ fun HomeScreen(title: String, imageRes: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit) {
+fun TarjetasInicio(
+    navigateToMenuCustomer: (String) -> Unit,
+    navigateToMenuDoctor: (String) -> Unit,
+    navigateToInit: () -> Unit
+) {
     var isLoading by remember { mutableStateOf(false) }
-    var showLogoutDialog by remember { mutableStateOf(false) } // 🔔 Modal de confirmación
+    var showLogoutDialog by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
 
-    val navigate = { destination: String ->
+    // Funciones de navegación separadas para cliente y doctor
+    val navigateCustomer = { destination: String ->
         isLoading = true
         coroutineScope.launch {
             delay(3000)
             isLoading = false
             navigateToMenuCustomer(destination)
+        }
+    }
+
+    val navigateDoctor = { destination: String ->
+        isLoading = true
+        coroutineScope.launch {
+            delay(3000)
+            isLoading = false
+            navigateToMenuDoctor(destination)
         }
     }
 
@@ -82,7 +96,6 @@ fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () 
             .background(Color(0xFFF5F5F5))
             .padding(vertical = 32.dp)
     ) {
-        // 🧭 Fila superior con los iconos izquierda y derecha
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,21 +103,8 @@ fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () 
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Simula el espacio del icono izquierdo si está comentado
-            /*
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_arrow_back_ios_24),
-                contentDescription = "Atrás",
-                modifier = Modifier
-                    .size(30.dp)
-                    .clickable {
-                        // Acción para atrás
-                    }
-            )
-            */
-            Spacer(modifier = Modifier.size(30.dp)) // Ocupa el mismo lugar que el ícono izquierdo
+            Spacer(modifier = Modifier.size(30.dp)) // Icono izquierdo (espacio)
 
-            // Icono derecha (cerrar sesión con modal)
             Icon(
                 painter = painterResource(id = R.drawable.icon_out),
                 contentDescription = "Salir",
@@ -143,17 +143,17 @@ fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () 
                 HomeScreen(
                     title = "Cliente",
                     imageRes = R.drawable.cliente_veterinario,
-                    modifier = Modifier.clickable { navigate("menuCustomer") }
+                    modifier = Modifier.clickable { navigateCustomer("menuCustomer") }
                 )
                 HomeScreen(
                     title = "Veterinario",
                     imageRes = R.drawable.medico,
-                    modifier = Modifier.clickable { navigate("menuVeterinario") }
+                    modifier = Modifier.clickable { navigateDoctor("menuDoctor") }
                 )
             }
         }
 
-        // 🧼 Modal de confirmación de cierre de sesión
+        // Diálogo de confirmación de logout
         if (showLogoutDialog) {
             AlertDialog(
                 onDismissRequest = { showLogoutDialog = false },
@@ -163,7 +163,7 @@ fun TarjetasInicio(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () 
                     TextButton(
                         onClick = {
                             showLogoutDialog = false
-                            navigateToInit() // Confirmar cierre de sesión
+                            navigateToInit()
                         }
                     ) {
                         Text("Aceptar")
