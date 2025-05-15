@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.veterinaria.hospipet.landing.appointment.AgendarCitaScreen
 import com.veterinaria.hospipet.landing.home.TarjetasInicio
 import com.veterinaria.hospipet.landing.init.InitScreen
 import com.veterinaria.hospipet.landing.login.LoginScreen
@@ -48,7 +49,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
                 navigateToInit = { navHostController.navigate("init") },
                 navigateToHome = { navHostController.navigate("home") },
                 navigateToMenuCustomer = { navHostController.navigate("signUp") },
-                navigateToMyPets = { navHostController.navigate("myPets") }
+                navigateToMyPets = { navHostController.navigate("myPets") },
+                navigateToCitas = { navHostController.navigate("appointment") }
             )
         }
         composable("menuDoctor") {
@@ -67,6 +69,10 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         }
         composable("registerPet") {
             RegisterPetScreen(db = Firebase.firestore)
+        }
+        composable("appointment") {
+            // Llamamos al composable directamente
+            AgendarCitaScreen(db = Firebase.firestore)
         }
     }
 }

@@ -95,7 +95,7 @@ fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToH
                 .padding(horizontal = 70.dp)
         )
 
-       /* Button(
+      /* Button(
             onClick = {
                 navigateToHome()
             },
