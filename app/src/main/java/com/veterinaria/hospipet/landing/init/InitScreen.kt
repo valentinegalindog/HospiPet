@@ -79,7 +79,7 @@ fun InitScreen(auth: FirebaseAuth, navigateToLogin: () -> Unit = {}, navigateToH
             visualTransformation = PasswordVisualTransformation() // Oculta el texto como contraseña
         )
 
-        Spacer(modifier = Modifier.height(48.dp)) // Bajé más el botón
+        Spacer(modifier = Modifier.height(48.dp))
 
         Button(
             onClick = { auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
