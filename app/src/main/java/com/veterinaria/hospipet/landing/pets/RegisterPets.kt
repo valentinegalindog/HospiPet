@@ -52,7 +52,7 @@ fun createPet(
     onSuccess: () -> Unit,
     onError: (Exception) -> Unit,
 
-) {
+    ) {
     db.collection("pets")
         .add(pet)
         .addOnSuccessListener {

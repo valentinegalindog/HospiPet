@@ -61,7 +61,7 @@ fun MenuCustomerScreen(title: String, imageRes: Int, modifier: Modifier = Modifi
 }
 
 @Composable
-fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit, navigateToHome: () -> Unit, navigateToMyPets: () -> Unit) {
+fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: () -> Unit, navigateToHome: () -> Unit, navigateToMyPets: () -> Unit, navigateToCitas: () -> Unit ) {
     var isLoading by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) } // 🔔 Modal de confirmación
     val coroutineScope = rememberCoroutineScope()
@@ -74,7 +74,8 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
             //navigateToMenuCustomer(destination)
             when (destination) {
                 "myPets" -> navigateToMyPets()
-                "signUp" -> navigateToMenuCustomer("signUp") // o cualquier otra ruta
+                "signUp" -> navigateToMenuCustomer("signUp")
+                "appointment" -> navigateToCitas()// o cualquier otra ruta
             }
         }
     }
@@ -158,7 +159,7 @@ fun TarjetasCustomer(navigateToMenuCustomer: (String) -> Unit, navigateToInit: (
                 MenuCustomerScreen(
                     title = "Citas medicas",
                     imageRes = R.drawable.citas_medicas,
-                    modifier = Modifier.clickable { navigate("signUp") }
+                    modifier = Modifier.clickable { navigate("appointment") }
                 )
                 MenuCustomerScreen(
                     title = "Hospitalización",
